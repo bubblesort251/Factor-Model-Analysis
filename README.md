@@ -19,3 +19,7 @@ The two most useful functions in this library are "filter_time_series" and "plot
 ## FinancialMetricsLib
 
 This library contains various functions to calculate financial metrics
+
+## FullLib.yml
+
+Library which should have all dependencies installed. Creates a conda environment to run the code
