@@ -13,7 +13,7 @@ The function "compute_returns" constructs factor momentum from a pandas datafram
 
 The two most useful functions in this library are "filter_time_series" and "plot_returns_regime_multiple"
 
-* filter_time_series: runs the LASSO trend filtering algorithm and returns a numpy series of labels given a $\lambda_1$ value
+* filter_time_series: runs the LASSO trend filtering algorithm and returns a numpy series of labels given a  \\(\lambda_1 )\\ value
 * plot_return_regime_multiple: creates a graph where the "crash" regime is shaded in grey
 
 ## FinancialMetricsLib
