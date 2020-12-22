@@ -1,2 +1,2 @@
 # Factor-Model-Analysis
-Place for Factor Model Code
+Place to put Factor Modeling Code and Trend Filtering Code
