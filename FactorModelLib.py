@@ -109,12 +109,13 @@ def create_options_cv_ridge():
 
 def create_options_cv_elastic_net():
     options = create_options()
-    options['maxLambda'] = .25
+    options['minAlpha'] = 1e-12
+    options['maxAlpha'] = 25
     options['maxL1Ratio'] = .99
-    options['nLambdas'] = 50
+    options['nAlphas'] = 50
     options['nL1Ratios'] = 50
     options['randomState'] = 7777
-    options['nFolds'] = 10
+    options['nFolds'] = 5
     return options
 
 def create_options_best_subset():
@@ -534,14 +535,13 @@ def cross_validated_elastic_net_regression(data, dependentVar, factorNames, opti
         newData = newData.query(options['timeperiod'])
 
     #Do CV Lasso
-    alphaMax = options['maxLambda']/(2*newData.shape[0])
-    alphas = np.linspace(1e-12, alphaMax, options['nLambdas'])
+    alphas = np.linspace(options['minAlpha'], options['maxAlpha'], options['nAlphas'])
     l1RatioMax = options['maxL1Ratio']
     l1Ratios = np.linspace(1e-6, l1RatioMax, options['nL1Ratios'])
     if(options['randomState'] == 'none'):
         elasticNetTest = ElasticNet(fit_intercept=True)
     else:
-        elasticNetTest = ElasticNet(random_state = options['randomState'], fit_intercept=True)
+        elasticNetTest = ElasticNet(random_state = options['randomState'], fit_intercept=True, max_iter=100000)
 
     tuned_parameters = [{'alpha': alphas, 'l1_ratio': l1Ratios}]
 
@@ -554,8 +554,8 @@ def cross_validated_elastic_net_regression(data, dependentVar, factorNames, opti
     if (options['printLoadings'] == True):
         #Now print the results
         print_timeperiod(newData, dependentVar, options)
-        print('Best lambda1 = ' + str(alphaBest*2*newData.shape[0]*l1RatioBest))
-        print('Best lambda2 = ' + str(newData.shape[0]*alphaBest*(1-l1RatioBest)))
+        print('Best Alpha = ' + str(alphaBest))
+        print('Best l1Ratio = ' + str(l1RatioBest))
         #Now print the factor loadings
         display_factor_loadings(elasticNetBest.intercept_, elasticNetBest.coef_, factorNames, options)
 
